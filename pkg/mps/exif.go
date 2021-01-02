@@ -11,6 +11,8 @@ import (
 	"github.com/h2non/filetype/types"
 )
 
+const exifTimeFormat = "2006:01:02 15:04:05"
+
 // getExifData gets the EXIF tags from a supported file
 func getExifData(f io.ReadSeeker, fileSize int, fileType types.Type) (*exif.Ifd, error) {
 	switch fileType {
@@ -47,7 +49,8 @@ func getDate(ifd *exif.Ifd) (*time.Time, error) {
 			if err != nil {
 				return nil, fmt.Errorf("could not format exif datetime string: %w", err)
 			}
-			foundTime, err = time.Parse("2006:01:02 15:04:05", tagString)
+
+			foundTime, err = time.Parse(exifTimeFormat, tagString)
 			if err != nil {
 				return nil, fmt.Errorf("could not parse formatted datetime string: %w", err)
 			}
