@@ -7,6 +7,7 @@ import (
 
 	"github.com/dsoprea/go-exif/v3"
 	jpegis "github.com/dsoprea/go-jpeg-image-structure/v2"
+	pngis "github.com/dsoprea/go-png-image-structure/v2"
 	"github.com/h2non/filetype/matchers"
 	"github.com/h2non/filetype/types"
 )
@@ -19,6 +20,20 @@ func getExifData(f io.ReadSeeker, fileSize int, fileType types.Type) (*exif.Ifd,
 	case matchers.TypeJpeg:
 		{
 			ec, err := jpegis.NewJpegMediaParser().Parse(f, fileSize)
+			if err != nil {
+				return nil, fmt.Errorf("could not parse jpeg file: %w", err)
+			}
+
+			rootIfd, _, err := ec.Exif()
+			if err != nil {
+				return nil, fmt.Errorf("could not get exif data from jpeg file: %w", err)
+			}
+
+			return rootIfd, nil
+		}
+	case matchers.TypePng:
+		{
+			ec, err := pngis.NewPngMediaParser().Parse(f, fileSize)
 			if err != nil {
 				return nil, fmt.Errorf("could not parse jpeg file: %w", err)
 			}
