@@ -55,5 +55,9 @@ func getDate(ifd *exif.Ifd) (*time.Time, error) {
 		}
 	}
 
+	if (foundTime == time.Time{}) {
+		return nil, fmt.Errorf("no datetime found")
+	}
+
 	return &foundTime, nil
 }
