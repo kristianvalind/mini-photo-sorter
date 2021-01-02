@@ -100,8 +100,7 @@ func main() {
 			}
 		}
 
-		outputFileName := fileDate.Format(outputPattern)
-		outputFileName = strings.ReplaceAll(outputFileName, "{filename}", filepath.Base(fileToProcess))
+		outputFileName := strings.ReplaceAll(fileDate.Format(outputPattern), "{filename}", filepath.Base(fileToProcess))
 		outputFilePath := filepath.Join(outputBasePath, outputFileName)
 
 		fmt.Printf("%v -> %v\n", fileToProcess, outputFilePath)
