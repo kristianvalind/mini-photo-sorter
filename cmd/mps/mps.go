@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"os"
@@ -102,7 +103,45 @@ func main() {
 
 		outputFileName := strings.ReplaceAll(fileDate.Format(outputPattern), "{filename}", filepath.Base(fileToProcess))
 		outputFilePath := filepath.Join(outputBasePath, outputFileName)
-
-		fmt.Printf("%v -> %v\n", fileToProcess, outputFilePath)
+		moveFile(fileToProcess, outputFilePath, dryRun)
 	}
+}
+
+// Safely move the file, or fail, reporting an error
+func moveFile(oldPath, newPath string, dryRun bool) error {
+	c := 0
+	// Check if destination exists
+	for {
+		c++
+		_, err := os.Stat(newPath)
+		if err == nil {
+			// Destination exists
+			newPathDir := filepath.Dir(newPath)
+			newPathFileName := filepath.Base(newPath)
+			newPathExt := filepath.Ext(newPathFileName)
+			newPathExtless := strings.TrimSuffix(newPathFileName, newPathExt)
+
+			newPathFileName = fmt.Sprintf("%v_%04d%v", newPathExtless, c, newPathExt)
+			newPath = filepath.Join(newPathDir, newPathFileName)
+		} else {
+			// Destination does not exist
+			if errors.Is(err, os.ErrNotExist) {
+				break
+			}
+
+			// Other error
+			return fmt.Errorf("unknown error from destionation path stat: %w", err)
+		}
+	}
+
+	fmt.Printf("%v -> %v\n", oldPath, newPath)
+
+	if !dryRun {
+		err := os.Rename(oldPath, newPath)
+		if err != nil {
+			return fmt.Errorf("could not move file: %w", err)
+		}
+	}
+
+	return nil
 }
