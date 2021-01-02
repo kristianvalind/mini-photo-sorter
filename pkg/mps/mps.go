@@ -68,7 +68,7 @@ func GetDate(path string) (*time.Time, error) {
 		}
 		f.Close()
 
-		date, err := exifData.getDate()
+		date, err := getDate(exifData)
 		if err != nil {
 			return nil, fmt.Errorf("could not get date from exif data: %w", err)
 		}
