@@ -1,6 +1,9 @@
-.PHONY: build droplet
+.PHONY: clean build droplet
 
-build:
+clean:
+	rm -fr mps "MPS Droplet.app"
+
+build: clean
 	cd cmd/mps/ && go build -o ../../mps
 
 droplet: build
