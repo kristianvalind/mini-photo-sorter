@@ -1,4 +1,4 @@
-.PHONY: build
+.PHONY: build droplet
 
 build:
 	cd cmd/mps/ && go build -o ../../mps
