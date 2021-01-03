@@ -145,7 +145,11 @@ func moveFile(oldPath, newPath string, dryRun bool) error {
 	fmt.Printf("%v -> %v\n", oldPath, newPath)
 
 	if !dryRun {
-		err := os.Rename(oldPath, newPath)
+		err := os.MkdirAll(filepath.Dir(newPath), os.ModePerm)
+		if err != nil {
+			return fmt.Errorf("could not create target directory: %w", err)
+		}
+		err = os.Rename(oldPath, newPath)
 		if err != nil {
 			return fmt.Errorf("could not move file: %w", err)
 		}
