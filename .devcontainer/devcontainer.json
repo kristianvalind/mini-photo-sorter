@@ -15,9 +15,8 @@
 	"runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
 
 	// Set *default* container specific settings.json values on container create.
-	"settings": { 
+	"settings": {
 		"terminal.integrated.shell.linux": "/bin/bash",
-		"go.useGoProxyToCheckForToolUpdates": false,
 		"go.useLanguageServer": true,
 		"go.gopath": "/go",
 		"go.goroot": "/usr/local/go",
@@ -26,7 +25,8 @@
 	
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
-		"golang.Go"
+		"golang.Go",
+		"idleberg.applescript"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
