@@ -1,9 +1,9 @@
 on open droppedItems
 	-- Change as you want
-	set commandFlags to "-r -d"
+	set commandFlags to "-r -s -d"
 	
 	set commandPath to (quoted form of POSIX path of (path to me)) & "Contents/MacOS/mps"
-	
+
 	set posixPaths to {}
 	
 	repeat with thisItem in droppedItems
