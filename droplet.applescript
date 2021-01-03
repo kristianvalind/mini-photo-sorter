@@ -1,8 +1,8 @@
 on open droppedItems
-	-- Change to point to the mps binary
-	set commandPath to "/path/to/mps"
 	-- Change as you want
 	set commandFlags to "-r -d"
+	
+	set commandPath to (quoted form of POSIX path of (path to me)) & "Contents/MacOS/mps"
 	
 	set posixPaths to {}
 	
