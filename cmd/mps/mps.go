@@ -103,7 +103,15 @@ func main() {
 
 		outputFileName := strings.ReplaceAll(fileDate.Format(outputPattern), "{filename}", filepath.Base(fileToProcess))
 		outputFilePath := filepath.Join(outputBasePath, outputFileName)
-		moveFile(fileToProcess, outputFilePath, dryRun)
+		err = moveFile(fileToProcess, outputFilePath, dryRun)
+		if err != nil {
+			fmt.Printf("could not move file: %v\n", err)
+			if stopOnError {
+				os.Exit(1)
+			} else {
+				continue
+			}
+		}
 	}
 }
 
